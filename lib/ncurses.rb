@@ -19,8 +19,12 @@
 
 # $Id: ncurses.rb,v 1.7 2005/02/26 22:51:29 t-peters Exp $
 
-require "ncurses.so"
-
+begin
+  require 'ncurses.bundle'
+rescue LoadError => e
+  raise e unless e.message =~ /no such file to load -- ncurses\.bundle/
+  require 'ncurses.so'
+end
 
 # Ncurses constants with leading underscore
 def Ncurses._XOPEN_CURSES
