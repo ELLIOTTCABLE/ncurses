@@ -31,16 +31,39 @@ $LDFLAGS += ' -L/usr/pkg/lib'
 
 have_header('unistd.h')
 
-%w(ncurses ncurses/curses curses).each do |h|
+# ===================
+# = Ncurses headers =
+# ===================
+%w(ncursesw ncursesw/ncursesw ncursesw/cursesw ncursesw/curses cursesw).each do |h|
+  break if @have_ncursesw_header = have_header("#{h}.h")
+end
+STDERR.puts 'WARNING: Ncurses widechar headers missing! Did you configure ncurses with `--enable-widec`? We will attempt to build without widech support!' unless @have_ncursesw_header
+
+%w(ncurses ncurses/ncurses ncurses/curses curses).each do |h|
   break if @have_ncurses_header = have_header("#{h}.h")
-end
-raise 'Ncurses headers missing. Have you installed ncurses?' unless @have_ncurses_header
+end unless @have_ncursesw_header
+raise 'Ncurses headers missing. Have you installed ncurses?' unless @have_ncursesw_header or @have_ncurses_header
 
-%w(ncurses pdcurses).each do |lib|
-  break if @have_ncurses_library = have_library(lib, 'wmove')
+# ===================
+# = Ncurses library =
+# ===================
+# We don't want to accidentally link against non-widech libraries if we don't
+# have a widech Ncurses, or vice versa. So we only look for the relevant ones.
+if @have_ncursesw_header
+  %w(ncursesw pdcursesw).each do |lib|
+    break if @have_ncursesw_library = have_library(lib, 'wmove')
+  end
+  raise 'Ncurses widech library missing, but ncurses widech headers present. Have you installed ncurses properly,  with `--enable-widec`?' unless @have_ncursesw_library
+else
+  %w(ncurses pdcurses).each do |lib|
+    break if @have_ncurses_library = have_library(lib, 'wmove')
+  end
+  raise 'Ncurses library missing. Have you installed ncurses properly?' unless @have_ncurses_library
 end
-raise 'Ncurses library missing. Have you installed ncurses?' unless @have_ncurses_library
 
+# =============
+# = Functions =
+# =============
 %w(newscr TABSIZE ESCDELAY keybound curses_version tigetstr getwin putwin
 ungetmouse mousemask wenclose mouseinterval wmouse_trafo mcprint has_key 
 delscreen define_key keyok resizeterm use_default_colors use_extended_names
@@ -57,13 +80,41 @@ _tracechtype _tracechtype2 _tracemouse).each {|func| have_func(func) }
 puts 'checking for other functions that appeared after ncurses version 5.0...'
 %w(assume_default_colors attr_get).each {|func| have_func(func) }
 
-puts 'checking for the panel library...'
-have_library('panel', 'panel_hidden') if have_header('panel.h')
+# ===================
+# = Other libraries =
+# ===================
+# We don't want to accidentally link against non-widech libraries if we don't
+# have a widech Ncurses, or vice versa. So we only look for the relevant ones.
+if @have_ncursesw_header
+  puts 'checking for the panel library...'
+  %w(panelw ncursesw/panelw ncursesw/panel).each do |h|
+    have_library('panelw', 'panel_hidden') and break if have_header("#{h}.h")
+  end
 
-puts 'checking for the form library...'
-have_library('form', 'new_form') if have_header('form.h')
+  puts 'checking for the form library...'
+  %w(formw ncursesw/formw ncursesw/form).each do |h|
+    have_library('formw', 'new_form') and break if have_header("#{h}.h")
+  end
 
-puts 'checking for the menu library...'
-have_library('menu', 'new_menu') if have_header('menu.h')
+  puts 'checking for the menu library...'
+  %w(menuw ncursesw/menuw ncursesw/menu).each do |h|
+    have_library('menuw', 'new_menu') and break if have_header("#{h}.h")
+  end
+else
+  puts 'checking for the panel library...'
+  %w(panel ncurses/panel).each do |h|
+    have_library('panel', 'panel_hidden') and break if have_header("#{h}.h")
+  end
+
+  puts 'checking for the form library...'
+  %w(form ncurses/form).each do |h|
+    have_library('form', 'new_form') and break if have_header("#{h}.h")
+  end
+
+  puts 'checking for the menu library...'
+  %w(menu ncurses/menu).each do |h|
+    have_library('menu', 'new_menu') and break if have_header("#{h}.h")
+  end
+end
 
 create_makefile('ncurses')
