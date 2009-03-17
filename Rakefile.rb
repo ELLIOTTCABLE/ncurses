@@ -1,6 +1,8 @@
 ($:.unshift File.expand_path(File.join( File.dirname(__FILE__), 'lib' ))).uniq!
 require 'ncurses/etc'
 
+require 'fileutils'
+
 Summary = 'This wrapper provides access to the functions, macros, global variables and constants ' +
           'of the ncurses library.  These are mapped to a Ruby Module named "Ncurses":  ' +
           'Functions and external variables are implemented as singleton functions of the Module Ncurses.'
@@ -43,8 +45,11 @@ desc 'Removes all producs'
 task :clobber do
   File.open '.gitignore' do |gitignore|
     gitignore.each_line do |glob|
+      glob.chomp!
       glob.gsub! /#.*$/, ''
-      `rm -rf #{File.expand_path(File.join( File.dirname(__FILE__), glob ))}` unless glob.gsub(/\s/,'').empty?
+      Dir[File.expand_path(File.join( File.dirname(__FILE__), '**', glob)).chomp].each do |file|
+        FileUtils.rm file
+      end unless glob.gsub(/\s/,'').empty?
     end
   end
 end
