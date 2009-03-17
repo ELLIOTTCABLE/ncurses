@@ -22,7 +22,7 @@
 begin
   require 'ncurses.bundle'
 rescue LoadError => e
-  raise e unless e.message =~ /no such file to load -- ncurses\.bundle/
+  raise e unless e.message =~ /^no such file to load -- ncurses\.bundle$/
   require 'ncurses.so'
 end
 

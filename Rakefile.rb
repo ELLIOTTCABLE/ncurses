@@ -30,7 +30,8 @@ begin
     end
   end
   
-rescue LoadError
+rescue LoadError => e
+  raise e unless e.message =~ /^no such file to load -- echoe$/
   desc 'You need the `echoe` gem to package Ncurses'
   task :package
 end
