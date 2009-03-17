@@ -60,6 +60,8 @@ end
 
 
 module Ncurses
+  Version = "1.2.0"
+  
   module Destroy_checker; def destroyed?; @destroyed; end; end
   class WINDOW
     include Destroy_checker
