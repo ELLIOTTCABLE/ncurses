@@ -1,32 +1,53 @@
-require 'rake/gempackagetask'
+($:.unshift File.expand_path(File.join( File.dirname(__FILE__), 'lib' ))).uniq!
+require 'ncurses'
 
-SUMMARY  = 'This wrapper provides access to the functions, macros, global variables and constants ' +
-           'of the ncurses library.  These are mapped to a Ruby Module named "Ncurses":  ' +
-           'Functions and external variables are implemented as singleton functions of the Module Ncurses.'
+Summary = 'This wrapper provides access to the functions, macros, global variables and constants ' +
+          'of the ncurses library.  These are mapped to a Ruby Module named "Ncurses":  ' +
+          'Functions and external variables are implemented as singleton functions of the Module Ncurses.'
 
-spec = Gem::Specification.new do |s|
-  s.name          = 'ncurses'
-  s.email         = 't-peters@users.berlios.de'
-  s.author        = 'Tobias Peters'
-  s.version       = '1.2'
-  s.summary       = SUMMARY
-  s.platform      = Gem::Platform::RUBY
-  s.has_rdoc      = false
-  s.homepage      = 'http://ncurses-ruby.berlios.de'
-  s.description   = SUMMARY
-  s.require_paths = ["lib"]
-  s.files         = Dir.glob("[A-Z]*") + Dir.glob("*.{c,h,rb}") + Dir.glob("{examples,lib}/**/*")
-  s.extensions    = FileList["ext/**/extconf.rb"]
-end
-
-# add your default gem packing task
-Rake::GemPackageTask.new(spec) do |pkg|
-end
-
+# =======================
+# = Gem packaging tasks =
+# =======================
 begin
-  require 'rake/extensiontask'
+  require 'echoe'
+  
+  task :package => :'package:package'
+  task :install => :'package:install'
+  task :manifest => :'package:manifest'
+  task :compile => :'package:compile'
+  namespace :package do
+    Echoe.new('ncurses', Ncurses::Version) do |g|
+      g.author = ['elliottcable']
+      g.email = ['Refinery@elliottcable.com']
+      g.summary = Summary
+      g.url = 'http://github.com/elliottcable/ncurses'
+      g.development_dependencies = ['echoe >= 3.0.2']
+      g.extension_pattern = 'ext/**/extconf.rb'
+      g.manifest_name = '.manifest'
+      g.retain_gemspec = true
+      g.ignore_pattern = /^\.git\/|^meta\/|\.gemspec/
+    end
+  end
+  
 rescue LoadError
-  warn "To compile native gems, install rake-compiler (gem install rake-compiler)"
-else
-  Rake::ExtensionTask.new('ncurses', spec)
+  desc 'You need the `echoe` gem to package Ncurses'
+  task :package
 end
+
+# =========
+# = Other =
+# =========
+desc 'Removes all producs'
+task :clobber do
+  File.open '.gitignore' do |gitignore|
+    gitignore.each_line do |glob|
+      glob.gsub! /#.*$/, ''
+      `rm -rf #{File.expand_path(File.join( File.dirname(__FILE__), glob ))}` unless glob.empty?
+    end
+  end
+end
+
+desc 'Check everything over before commiting'
+task :aok => [:'package:manifest', :'package:package', :'package:compile']
+
+task :ci => []
