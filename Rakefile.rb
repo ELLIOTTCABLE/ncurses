@@ -44,7 +44,7 @@ task :clobber do
   File.open '.gitignore' do |gitignore|
     gitignore.each_line do |glob|
       glob.gsub! /#.*$/, ''
-      `rm -rf #{File.expand_path(File.join( File.dirname(__FILE__), glob ))}` unless glob.empty?
+      `rm -rf #{File.expand_path(File.join( File.dirname(__FILE__), glob ))}` unless glob.gsub(/\s/,'').empty?
     end
   end
 end
