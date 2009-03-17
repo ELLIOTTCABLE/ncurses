@@ -1,3 +1,8 @@
-lib/ncurses.so
 pkg/
-tmp/
+*.log
+
+# Build-related stuff
+Makefile
+*.o
+ncurses.so
+ncurses.bundle
