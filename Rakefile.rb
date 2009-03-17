@@ -26,7 +26,7 @@ begin
       g.manifest_name = 'MANIFEST'
       g.retain_gemspec = true
       g.rakefile_name = 'Rakefile.rb'
-      g.ignore_pattern = /^\.git\/|^meta\/|\.gemspec/
+      g.ignore_pattern = /^\.git\/|\.gemspec/
     end
   end
   
