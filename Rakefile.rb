@@ -25,7 +25,7 @@ begin
       g.url = 'http://github.com/elliottcable/ncurses'
       g.development_dependencies = ['echoe >= 3.0.2']
       g.extension_pattern = 'ext/**/extconf.rb'
-      g.manifest_name = 'MANIFEST'
+      g.manifest_name = '.manifest'
       g.retain_gemspec = true
       g.rakefile_name = 'Rakefile.rb'
       g.ignore_pattern = /^\.git\/|\.gemspec/

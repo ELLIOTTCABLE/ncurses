@@ -1,5 +1,3 @@
-Changes
-COPYING
 examples/example.rb
 examples/form.rb
 examples/form2.rb
@@ -20,8 +18,6 @@ ext/ncurses/panel_wrap.c
 ext/ncurses/panel_wrap.h
 lib/ncurses/etc.rb
 lib/ncurses.rb
-MANIFEST
+license.txt
 Rakefile.rb
-README
-THANKS
-TODO
+.manifest
