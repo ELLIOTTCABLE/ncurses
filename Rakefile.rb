@@ -25,6 +25,7 @@ begin
       g.extension_pattern = 'ext/**/extconf.rb'
       g.manifest_name = '.manifest'
       g.retain_gemspec = true
+      g.rakefile_name = 'Rakefile.rb'
       g.ignore_pattern = /^\.git\/|^meta\/|\.gemspec/
     end
   end
