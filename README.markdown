@@ -1,14 +1,16 @@
 ncurses
 =======
-This is a RubyGem installation of Tobias Herzke's [`ncurses-ruby`][ncurses-ruby].
+This is a RubyGem installation of Tobias Herzke's [ncurses-ruby][].
 It has been modified slightly in various ways, and is intended to continue the
 life of the otherwise apparently defunct project.
 
 Since it is now on [GitHub][], feel free to fork and contribute to the project, it
 would be much appreciated.
 
-  [ncurses-ruby]: <http://ncurses-ruby.berlios.de/> (`ncurses-ruby` homepage)
-  [GitHub]: <http://github.com/> (GitHub, code sharing site extraordinaire)
+  [ncurses-ruby]: http://ncurses-ruby.berlios.de/
+                  "ncurses-ruby's homepage"
+  [GitHub]:       http://github.com/
+                  "GitHub, code sharing site extraordinaire"
 
 Installation
 ------------
@@ -38,18 +40,21 @@ You'll need to install it to build and compile this gem:
     rake package:install # Packages the RubyGem and `sudo gem install`s it
     rake -T              # To list other tasks
     
-There are no specs as of yet (`ncurses-ruby` never had any, and I don't
+There are no specs as of yet (ncurses-ruby never had any, and I don't
 currently have the time to write an entire test suite for this), so I'd ask
 that you take the archaic method of making sure whatever you add/change works:
 run it/use it in a bunch of different ways. d-:
 
 If you're really awesome, you could write said test suite!
 
-  [git]: <http://git-scm.com/> (git, the fast version control system)
+  [git]:    http://git-scm.com/
+            "git, the fast version control system"
+  [echoe]:  http://github.com/fauna/echoe/
+            "Echoe, a better RubyGem packaging tool"
 
 Todo
 ----
-- Wrap all the methods listed as "not wrapped" in the original `ncurses-ruby`
+- Wrap all the methods listed as "not wrapped" in the original ncurses-ruby
   TODO file
 - Write a test / spec suite
 - Clean up the code
@@ -60,8 +65,8 @@ Contributions to this project by GitHub members, including myself
 ([elliottcable][]) can be [tracked on GitHub][impact].
 
 The vast majority of the work in this project was done by the original
-`ncurses-ruby` authors. Their names can be found in the original
-`ncurses-ruby` THANKS file. The contents of that file follow:
+ncurses-ruby authors. Their names can be found in the original ncurses-ruby
+THANKS file. The contents of that file follow:
 
 - Tobias Herzke
 - Simon Kaczor
@@ -75,5 +80,7 @@ The vast majority of the work in this project was done by the original
 - Paul Duncan
 - Tim Sutherland
 
-  [impact]: <http://github.com/elliottcable/ncurses/graphs/impact> (GitHub's "impact" graph for this project)
-  [elliottcable]: <http://github.com/elliottcable/> (elliottcable on GitHub)
+  [impact]:       http://github.com/elliottcable/ncurses/graphs/impact
+                  "GitHub's 'impact' graph for this project"
+  [elliottcable]: http://github.com/elliottcable/
+                  "elliottcable on GitHub"
