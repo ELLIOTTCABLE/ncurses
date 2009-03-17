@@ -18,9 +18,10 @@ ext/ncurses/ncurses_wrap.c
 ext/ncurses/ncurses_wrap.h
 ext/ncurses/panel_wrap.c
 ext/ncurses/panel_wrap.h
+lib/ncurses/etc.rb
 lib/ncurses.rb
+MANIFEST
 Rakefile.rb
 README
 THANKS
 TODO
-MANIFEST

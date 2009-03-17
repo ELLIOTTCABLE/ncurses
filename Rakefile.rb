@@ -1,5 +1,5 @@
 ($:.unshift File.expand_path(File.join( File.dirname(__FILE__), 'lib' ))).uniq!
-require 'ncurses'
+require 'ncurses/etc'
 
 Summary = 'This wrapper provides access to the functions, macros, global variables and constants ' +
           'of the ncurses library.  These are mapped to a Ruby Module named "Ncurses":  ' +

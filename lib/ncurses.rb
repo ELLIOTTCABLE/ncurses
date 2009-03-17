@@ -19,6 +19,8 @@
 
 # $Id: ncurses.rb,v 1.7 2005/02/26 22:51:29 t-peters Exp $
 
+require 'ncurses/etc'
+
 begin
   require 'ncurses.bundle'
 rescue LoadError => e
@@ -60,8 +62,6 @@ end
 
 
 module Ncurses
-  Version = "1.2.0"
-  
   module Destroy_checker; def destroyed?; @destroyed; end; end
   class WINDOW
     include Destroy_checker
