@@ -261,7 +261,7 @@ static void reg_proc(void *owner, int hook, VALUE proc)
  */
 static VALUE rbncurs_m_new_menu(VALUE dummy, VALUE rb_item_array)
 {
-  long n = RARRAY(rb_item_array)->len;
+  long n = RARRAYLEN(rb_item_array);
   /* Will ncurses free this array? If not, must do it after calling free_menu(). */
   ITEM **items = ALLOC_N(ITEM*, (n+1));
   long i;
@@ -387,7 +387,7 @@ static VALUE rbncurs_m_free_item(VALUE dummy, VALUE rb_item)
  */
 static VALUE rbncurs_c_set_menu_items(VALUE rb_menu, VALUE rb_item_array)
 {
-  long n = RARRAY(rb_item_array)->len;
+  long n = RARRAYLEN(rb_item_array);
   /*  If ncurses does not free memory used by the previous array of strings, */
   /*  we will have to do it now. */
   ITEM **items = ALLOC_N(ITEM*, (n+1));
