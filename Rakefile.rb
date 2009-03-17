@@ -17,8 +17,8 @@ begin
   task :compile => :'package:compile'
   namespace :package do
     Echoe.new('ncurses', Ncurses::Version) do |g|
-      g.author = ['elliottcable']
-      g.email = ['Refinery@elliottcable.com']
+      g.author = ['Tobias Herzke', 'Simon Kaczor', 'elliottcable']
+      g.email = ['t-peters@users.berlios.de', 'skaczor@cox.net', 'Ncurses@elliottcable.com']
       g.summary = Summary
       g.url = 'http://github.com/elliottcable/ncurses'
       g.development_dependencies = ['echoe >= 3.0.2']
