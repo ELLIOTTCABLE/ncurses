@@ -30,110 +30,40 @@ $CFLAGS  += ' -I/usr/pkg/include'
 $LDFLAGS += ' -L/usr/pkg/lib'
 
 have_header('unistd.h')
-if have_header('ncurses.h')
-  curses_header = 'ncurses.h'
-elsif have_header('ncurses/curses.h')
-  curses_header = 'ncurses/curses.h'
-elsif have_header('curses.h')
-  curses_header = 'curses.h'
-else
-  raise 'ncurses header file not found'
+
+%w(ncurses ncurses/curses curses).each do |h|
+  break if @have_ncurses_header = have_header("#{h}.h")
 end
+raise 'Ncurses headers missing. Have you installed ncurses?' unless @have_ncurses_header
 
-if have_library('ncurses', 'wmove')
-  curses_lib = 'ncurses'
-elsif have_library('pdcurses', 'wmove')
-  curses_lib = 'pdcurses'
-else
-  raise 'ncurses library not found'
+%w(ncurses pdcurses).each do |lib|
+  break if @have_ncurses_library = have_library(lib, 'wmove')
 end
+raise 'Ncurses library missing. Have you installed ncurses?' unless @have_ncurses_library
 
-have_func('newscr')
-have_func('TABSIZE')
-have_func('ESCDELAY')
-have_func('keybound')
-have_func('curses_version')
-have_func('tigetstr')
-have_func('getwin')
-have_func('putwin')
-have_func('ungetmouse')
-have_func('mousemask')
-have_func('wenclose')
-have_func('mouseinterval')
-have_func('wmouse_trafo')
-have_func('mcprint')
-have_func('has_key')
-
-have_func('delscreen')
-have_func('define_key')
-have_func('keyok')
-have_func('resizeterm')
-have_func('use_default_colors')
-have_func('use_extended_names')
-have_func('wresize')
-have_func('attr_on')
-have_func('attr_off')
-have_func('attr_set')
-have_func('chgat')
-have_func('color_set')
-have_func('filter')
-have_func('intrflush')
-have_func('mvchgat')
-have_func('mvhline')
-have_func('mvvline')
-have_func('mvwchgat')
-have_func('mvwhline')
-have_func('mvwvline')
-have_func('noqiflush')
-have_func('putp')
-have_func('qiflush')
-have_func('scr_dump')
-have_func('scr_init')
-have_func('scr_restore')
-have_func('scr_set')
-have_func('slk_attr_off')
-have_func('slk_attr_on')
-have_func('slk_attr')
-have_func('slk_attr_set')
-have_func('slk_color')
-have_func('tigetflag')
-have_func('tigetnum')
-have_func('use_env')
-have_func('vidattr')
-have_func('vid_attr')
-have_func('wattr_on')
-have_func('wattr_off')
-have_func('wattr_set')
-have_func('wchgat')
-have_func('wcolor_set')
-have_func('getattrs')
+%w(newscr TABSIZE ESCDELAY keybound curses_version tigetstr getwin putwin
+ungetmouse mousemask wenclose mouseinterval wmouse_trafo mcprint has_key 
+delscreen define_key keyok resizeterm use_default_colors use_extended_names
+wresize attr_on attr_off attr_set chgat color_set filter intrflush mvchgat
+mvhline mvvline mvwchgat mvwhline mvwvline noqiflush putp qiflush scr_dump
+scr_init scr_restore scr_set slk_attr_off slk_attr_on slk_attr slk_attr_set
+slk_color tigetflag tigetnum use_env vidattr vid_attr wattr_on wattr_off
+wattr_set wchgat wcolor_set getattrs).each {|func| have_func(func) }
 
 puts 'checking which debugging functions to wrap...'
-have_func('_tracef')
-have_func('_tracedump')
-have_func('_nc_tracebits')
-have_func('_traceattr')
-have_func('_traceattr2')
-have_func('_tracechar')
-have_func('_tracechtype')
-have_func('_tracechtype2')
-have_func('_tracemouse')
+%w(_tracef _tracedump _nc_tracebits _traceattr _traceattr2 _tracechar
+_tracechtype _tracechtype2 _tracemouse).each {|func| have_func(func) }
 
 puts 'checking for other functions that appeared after ncurses version 5.0...'
-have_func('assume_default_colors')
-have_func('attr_get')
+%w(assume_default_colors attr_get).each {|func| have_func(func) }
 
 puts 'checking for the panel library...'
-if have_header('panel.h')
-  have_library('panel', 'panel_hidden')
-end
+have_library('panel', 'panel_hidden') if have_header('panel.h')
+
 puts 'checking for the form library...'
-if have_header('form.h')
-  have_library('form', 'new_form')
-end
+have_library('form', 'new_form') if have_header('form.h')
+
 puts 'checking for the menu library...'
-if have_header('menu.h')
-  have_library('menu', 'new_menu')
-end
+have_library('menu', 'new_menu') if have_header('menu.h')
 
 create_makefile('ncurses')
