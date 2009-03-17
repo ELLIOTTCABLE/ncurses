@@ -1,3 +1,5 @@
+README.markdown
+Rakefile.rb
 examples/example.rb
 examples/form.rb
 examples/form2.rb
@@ -19,5 +21,4 @@ ext/ncurses/panel_wrap.h
 lib/ncurses/etc.rb
 lib/ncurses.rb
 license.txt
-Rakefile.rb
 .manifest
