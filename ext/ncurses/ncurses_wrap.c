@@ -18,8 +18,6 @@
  *  License along with this module; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: ncurses_wrap.c,v 1.13 2006/06/19 09:46:59 t-peters Exp $
- *
  * This file was adapted from the original ncurses header file which
  * has the following copyright statements:
  */

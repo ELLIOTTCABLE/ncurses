@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-# $Id: test_scanw.rb,v 1.1 2003/03/22 22:55:00 t-peters Exp $
-#
 # Test of the scanw function. Should really not be used in any serious curses
 # program. To use it, install scanf for ruby.
 

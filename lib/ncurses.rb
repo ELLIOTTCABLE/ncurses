@@ -17,8 +17,6 @@
 # License along with this module; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 
-# $Id: ncurses.rb,v 1.7 2005/02/26 22:51:29 t-peters Exp $
-
 require 'ncurses/etc'
 
 begin
