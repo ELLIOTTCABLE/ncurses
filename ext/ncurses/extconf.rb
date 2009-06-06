@@ -32,7 +32,7 @@ have_header('unistd.h')
 # ===================
 # = Ncurses headers =
 # ===================
-%w(ncursesw ncursesw/ncursesw ncursesw/cursesw ncursesw/curses cursesw).each do |h|
+%w(ncursesw/ncursesw ncursesw/ncurses ncursesw ncursesw/cursesw ncursesw/curses cursesw).each do |h|
   break if @have_ncursesw_header = have_header("#{h}.h")
 end
 STDERR.puts 'WARNING: Ncurses widechar headers missing! Did you configure ncurses with `--enable-widec`? We will attempt to build without widech support!' unless @have_ncursesw_header

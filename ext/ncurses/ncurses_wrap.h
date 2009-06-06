@@ -72,14 +72,14 @@ int close(int);
 
 #ifdef HAVE_NCURSESW_NCURSESW_H
 #  include <ncursesw/ncursesw.h>
-#elif HAVE_NCURSESW_CURSESW_H
-#  include <ncursesw/cursesw.h>
 #elif HAVE_NCURSESW_NCURSES_H
 #  include <ncursesw/ncurses.h>
-#elif HAVE_NCURSESW_CURSES_H
-#  include <ncursesw/curses.h>
 #elif HAVE_NCURSESW_H
 #  include <ncursesw.h>
+#elif HAVE_NCURSESW_CURSESW_H
+#  include <ncursesw/cursesw.h>
+#elif HAVE_NCURSESW_CURSES_H
+#  include <ncursesw/curses.h>
 #elif HAVE_CURSESW_H
 #  include <cursesw.h>
 #elif HAVE_NCURSES_NCURSES_H
