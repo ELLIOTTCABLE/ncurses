@@ -5,7 +5,7 @@
 # This file provides an example for the usage of the ncurses-ruby module.
 # Copyright (C) 2002 Tobias Peters <t-peters@users.berlios.de>
 #
-# The following license applys only to this file. It is less restrictive
+# The following license applies only to this file. It is less restrictive
 # than the license for the rest of the ncurses-ruby distribution. 
 # I've adapted this file from someone else, see below. 
 #
