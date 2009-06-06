@@ -4,7 +4,7 @@ examples/example.rb
 examples/form.rb
 examples/form2.rb
 examples/hello_ncurses.rb
-examples/LICENSES_for_examples
+examples/license_notes.txt
 examples/rain.rb
 examples/read_line.rb
 examples/tclock.rb
