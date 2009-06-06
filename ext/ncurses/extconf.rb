@@ -23,9 +23,12 @@ require 'mkmf'
 $CFLAGS  += ' -g'
 $CXXFLAGS = $CFLAGS
 
-# Add paths for NetBSD.
-$CFLAGS  += ' -I/usr/pkg/include'
-$LDFLAGS += ' -L/usr/pkg/lib'
+# Add alternative paths.
+# TODO: Can this be removed, and done from the command line?
+%w(/usr/local /usr/pkg).each do |path|
+  $CFLAGS  += " -I#{path}/include/"
+  $LDFLAGS += " -L#{path}/lib/"
+end
 
 have_header('unistd.h')
 
