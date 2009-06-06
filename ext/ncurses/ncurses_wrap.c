@@ -771,33 +771,40 @@ static VALUE rbncurs_getbkgd(VALUE dummy, VALUE arg1) {
 }
 
 /* TODO: Investigate this. What the FUCK? */
-static int rbncurshelper_nonblocking_wgetch(WINDOW *c_win) {
+static int rbncurshelper_nonblocking_wgetch(WINDOW* c_win) {
   /* nonblocking wgetch only implemented for Ncurses */
-  int halfdelay = NUM2INT(rb_iv_get(mNcurses, "@halfdelay"));
-  int infd = NUM2INT(rb_iv_get(mNcurses, "@infd"));
-  double screen_delay = halfdelay * 0.1;
+  /* FIXME: Uh, this seems to ignore the window's specific delay if the module's @halfdelay is set. Isn't that backwards? It should fallback if the window delay isn't set, right? */
+  double screen_delay = NUM2INT(rb_iv_get(mNcurses, "@halfdelay")) * 0.1;
+  
+  int cwin_delay = 0;
 #ifdef NCURSES_VERSION
-  int windelay = c_win->_delay;
-#else
-  int windelay = 0;
+  cwin_delay = c_win->_delay;
 #endif
-  double window_delay = (windelay >= 0) ? 0.001 * windelay : (1e200*1e200);
-  /* FIXME:                                                  ^ Infinity ^*/
+  
+  /* FIXME:                                                  v Infinity! v */
+  double window_delay = (cwin_delay >= 0) ? 0.001 * cwin_delay : (1e200*1e200);
   double delay = (screen_delay > 0) ? screen_delay : window_delay;
-  int result;
-  struct timeval tv;
-  struct timezone tz = {0,0};
-  double starttime, nowtime, finishtime;
   double resize_delay = NUM2INT(get_RESIZEDELAY()) / 1000.0;
-  fd_set in_fds;
-  gettimeofday(&tv, &tz);
-  starttime = tv.tv_sec + tv.tv_usec * 1e-6;
-  finishtime = starttime + delay;
+  
 #ifdef NCURSES_VERSION
   c_win->_delay = 0;
 #endif
+  
+  struct timeval tv;
+  struct timezone tz = {0,0};
+  /* TODO: Can we get rid of this superfluous gettimeofday() call? It'll be called anyway at the first loop of the while. */
+  gettimeofday(&tv, &tz);
+  double starttime, nowtime, finishtime;
+  /* FIXME: More efficient to store a seperate timeval for each *-time? Removes the math? */
+  starttime = tv.tv_sec + tv.tv_usec * 1e-6;
+  finishtime = starttime + delay;
+  
+  int infd = NUM2INT(rb_iv_get(mNcurses, "@infd"));
+  int result;
+  
   /* CHANGED: Who added this crap? WATF? Different coding style. What's going on? */
-  /* TODO: Clean and possibly remove this. */
+  /* TODO: Figure out what all this resize stuff's to do with, and possibly remove it. */
+  /* TODO: We want managed doupdate() calls in Nfoiled, can we remove this extra un-tracked one? */
   while (doupdate() /* detects resize */, (result = wgetch(c_win)) == ERR) {
     gettimeofday(&tv, &tz);
     nowtime = tv.tv_sec + tv.tv_usec * 1e-6;
@@ -810,12 +817,13 @@ static int rbncurshelper_nonblocking_wgetch(WINDOW *c_win) {
     tv.tv_usec = (unsigned)( (resize_delay - tv.tv_sec) * 1e6 );
     
     /* sleep on infd until input is available or tv reaches timeout */
+    fd_set in_fds;
     FD_ZERO(&in_fds);
     FD_SET(infd, &in_fds);
     rb_thread_select(infd + 1, &in_fds, NULL, NULL, &tv);
   }
 #ifdef NCURSES_VERSION
-  c_win->_delay = windelay;
+  c_win->_delay = cwin_delay;
 #endif
   return result;
 }
