@@ -770,9 +770,7 @@ static VALUE rbncurs_getbkgd(VALUE dummy, VALUE arg1) {
   return INT2NUM(getbkgd(get_window(arg1)));
 }
 
-/* TODO: Investigate this. What the FUCK? */
 static int rbncurshelper_nonblocking_wgetch(WINDOW* c_win) {
-  /* nonblocking wgetch only implemented for Ncurses */
   /* FIXME: Uh, this seems to ignore the window's specific delay if the module's @halfdelay is set. Isn't that backwards? It should fallback if the window delay isn't set, right? */
   double screen_delay = NUM2INT(rb_iv_get(mNcurses, "@halfdelay")) * 0.1;
   
@@ -784,7 +782,6 @@ static int rbncurshelper_nonblocking_wgetch(WINDOW* c_win) {
   /* FIXME:                                                  v Infinity! v */
   double window_delay = (cwin_delay >= 0) ? 0.001 * cwin_delay : (1e200*1e200);
   double delay = (screen_delay > 0) ? screen_delay : window_delay;
-  double resize_delay = NUM2INT(get_RESIZEDELAY()) / 1000.0;
   
 #ifdef NCURSES_VERSION
   c_win->_delay = 0;
@@ -792,10 +789,8 @@ static int rbncurshelper_nonblocking_wgetch(WINDOW* c_win) {
   
   struct timeval tv;
   struct timezone tz = {0,0};
-  /* TODO: Can we get rid of this superfluous gettimeofday() call? It'll be called anyway at the first loop of the while. */
   gettimeofday(&tv, &tz);
   double starttime, nowtime, finishtime;
-  /* FIXME: More efficient to store a seperate timeval for each *-time? Removes the math? */
   starttime = tv.tv_sec + tv.tv_usec * 1e-6;
   finishtime = starttime + delay;
   
@@ -803,17 +798,12 @@ static int rbncurshelper_nonblocking_wgetch(WINDOW* c_win) {
   int result;
   double lefttime;
   
-  /* CHANGED: Who added this crap? WATF? Different coding style. What's going on? */
-  /* TODO: Figure out what all this resize stuff's to do with, and possibly remove it. */
-  /* TODO: We want managed doupdate() calls in Nfoiled, can we remove this extra un-tracked one? */
-  while (doupdate() /* detects resize */, (result = wgetch(c_win)) == ERR) {
+  while ((result = wgetch(c_win)) == ERR) {
     gettimeofday(&tv, &tz);
     nowtime = tv.tv_sec + tv.tv_usec * 1e-6;
     lefttime = finishtime - nowtime;
     if (lefttime <= 0) break;
     
-    /* Check for terminal size change every resize_delay seconds */
-    if (resize_delay < lefttime) lefttime = resize_delay;
     tv.tv_sec = (time_t)lefttime;
     tv.tv_usec = (unsigned)( (lefttime - tv.tv_sec) * 1e6 );
     
