@@ -801,6 +801,7 @@ static int rbncurshelper_nonblocking_wgetch(WINDOW* c_win) {
   
   int infd = NUM2INT(rb_iv_get(mNcurses, "@infd"));
   int result;
+  double lefttime;
   
   /* CHANGED: Who added this crap? WATF? Different coding style. What's going on? */
   /* TODO: Figure out what all this resize stuff's to do with, and possibly remove it. */
@@ -808,13 +809,13 @@ static int rbncurshelper_nonblocking_wgetch(WINDOW* c_win) {
   while (doupdate() /* detects resize */, (result = wgetch(c_win)) == ERR) {
     gettimeofday(&tv, &tz);
     nowtime = tv.tv_sec + tv.tv_usec * 1e-6;
-    delay = finishtime - nowtime;
-    if (delay <= 0) break;
+    lefttime = finishtime - nowtime;
+    if (lefttime <= 0) break;
     
     /* Check for terminal size change every resize_delay seconds */
-    if (resize_delay > delay) resize_delay = delay;
-    tv.tv_sec = (time_t)resize_delay;
-    tv.tv_usec = (unsigned)( (resize_delay - tv.tv_sec) * 1e6 );
+    if (resize_delay < lefttime) lefttime = resize_delay;
+    tv.tv_sec = (time_t)lefttime;
+    tv.tv_usec = (unsigned)( (lefttime - tv.tv_sec) * 1e6 );
     
     /* sleep on infd until input is available or tv reaches timeout */
     fd_set in_fds;
