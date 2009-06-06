@@ -90,8 +90,7 @@ special circumstances.
 
   For example, on rare occasions, there may be a special need to
 encourage the widest possible use of a certain library, so that it
-becomes
-a de-facto standard.  To achieve this, non-free programs must be
+becomes a de-facto standard.  To achieve this, non-free programs must be
 allowed to use the library.  A more frequent case is that a free
 library does the same job as widely used non-free libraries.  In this
 case, there is little to gain by limiting the free library to free
@@ -140,8 +139,7 @@ included without limitation in the term "modification".)
 making modifications to it.  For a library, complete source code means
 all the source code for all modules it contains, plus any associated
 interface definition files, plus the scripts used to control
-compilation
-and installation of the library.
+compilation and installation of the library.
 
   Activities other than copying, distribution and modification are not
 covered by this License; they are outside its scope.  The act of
@@ -388,12 +386,12 @@ all those who receive copies directly or indirectly through you, then
 the only way you could satisfy both it and this License would be to
 refrain entirely from distribution of the Library.
 
-If any portion of this section is held invalid or unenforceable under
-any particular circumstance, the balance of the section is intended to
-apply, and the section as a whole is intended to apply in other
-circumstances.
+  If any portion of this section is held invalid or unenforceable
+under any particular circumstance, the balance of the section is
+intended to apply, and the section as a whole is intended to apply in
+other circumstances.
 
-It is not the purpose of this section to induce you to infringe any
+  It is not the purpose of this section to induce you to infringe any
 patents or other property right claims or to contest validity of any
 such claims; this section has the sole purpose of protecting the
 integrity of the free software distribution system which is
@@ -404,8 +402,8 @@ system; it is up to the author/donor to decide if he or she is willing
 to distribute software through any other system and a licensee cannot
 impose that choice.
 
-This section is intended to make thoroughly clear what is believed to
-be a consequence of the rest of this License.
+  This section is intended to make thoroughly clear what is believed
+to be a consequence of the rest of this License.
 
   12. If the distribution and/or use of the Library is restricted in
 certain countries either by patents or by copyrighted interfaces, the
@@ -420,13 +418,13 @@ versions of the Lesser General Public License from time to time.
 Such new versions will be similar in spirit to the present version,
 but may differ in detail to address new problems or concerns.
 
-Each version is given a distinguishing version number.  If the Library
-specifies a version number of this License which applies to it and
-"any later version", you have the option of following the terms and
-conditions either of that version or of any later version published by
-the Free Software Foundation.  If the Library does not specify a
-license version number, you may choose any version ever published by
-the Free Software Foundation.
+  Each version is given a distinguishing version number.  If the
+Library specifies a version number of this License which applies to it
+and "any later version", you have the option of following the terms
+and conditions either of that version or of any later version
+published by the Free Software Foundation.  If the Library does not
+specify a license version number, you may choose any version ever
+published by the Free Software Foundation.
 
   14. If you wish to incorporate parts of the Library into other free
 programs whose distribution conditions are incompatible with these,
@@ -511,5 +509,3 @@ Random Hacker.
   Ty Coon, President of Vice
 
 That's all there is to it!
-
-
