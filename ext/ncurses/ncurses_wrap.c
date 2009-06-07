@@ -770,9 +770,6 @@ static VALUE rbncurs_getbkgd(VALUE dummy, VALUE arg1) {
   return INT2NUM(getbkgd(get_window(arg1)));
 }
 
-static int rbncurshelper_immed_wgetch(WINDOW* c_win) {
-  return wgetch(c_win);
-}
 static int rbncurshelper_nonblocking_wgetch(WINDOW* c_win) {
   /* FIXME: Uh, this seems to ignore the window's specific delay if the module's @halfdelay is set. Isn't that backwards? It should fallback if the window delay isn't set, right? */
   double screen_delay = NUM2INT(rb_iv_get(mNcurses, "@halfdelay")) * 0.1;
@@ -824,8 +821,8 @@ static int rbncurshelper_nonblocking_wgetch(WINDOW* c_win) {
 static VALUE rbncurs_getch(VALUE dummy) {
   return INT2NUM(rbncurshelper_nonblocking_wgetch(stdscr));
 }
-static VALUE rbncurs_immed_getch(VALUE dummy) {
-  return INT2NUM(rbncurshelper_immed_wgetch(stdscr));
+static VALUE rbncurs_igetch(VALUE dummy) {
+  return INT2NUM(wgetch(stdscr));
 }
 static VALUE rbncurs_halfdelay(VALUE dummy, VALUE arg1) {
   return INT2NUM(rbncurshelper_halfdelay_cbreak(NUM2INT(arg1), 1));
@@ -1062,10 +1059,10 @@ static VALUE rbncurs_mvgetch(VALUE dummy, VALUE arg1, VALUE arg2) {
     return INT2NUM(ERR);
   return INT2NUM(rbncurshelper_nonblocking_wgetch(stdscr));
 }
-static VALUE rbncurs_immed_mvgetch(VALUE dummy, VALUE arg1, VALUE arg2) {
+static VALUE rbncurs_mvigetch(VALUE dummy, VALUE arg1, VALUE arg2) {
   if (wmove(stdscr, NUM2INT(arg1), NUM2INT(arg2)) == ERR)
     return INT2NUM(ERR);
-  return INT2NUM(rbncurshelper_immed_wgetch(stdscr));
+  return INT2NUM(wgetch(stdscr));
 }
 #ifdef HAVE_MVHLINE
 static VALUE rbncurs_mvhline(VALUE dummy, VALUE arg1, VALUE arg2, VALUE arg3, VALUE arg4) {
@@ -1124,11 +1121,11 @@ static VALUE rbncurs_mvwgetch(VALUE dummy, VALUE arg1, VALUE arg2, VALUE arg3) {
     return INT2NUM(ERR);
   return INT2NUM(rbncurshelper_nonblocking_wgetch(c_win));
 }
-static VALUE rbncurs_immed_mvwgetch(VALUE dummy, VALUE arg1, VALUE arg2, VALUE arg3) {
+static VALUE rbncurs_mvwigetch(VALUE dummy, VALUE arg1, VALUE arg2, VALUE arg3) {
   WINDOW* c_win = get_window(arg1);
   if (wmove(c_win, NUM2INT(arg1), NUM2INT(arg2)) == ERR)
     return INT2NUM(ERR);
-  return INT2NUM(rbncurshelper_immed_wgetch(c_win));
+  return INT2NUM(wgetch(c_win));
 }
 #ifdef HAVE_MVWHLINE
 static VALUE rbncurs_mvwhline(VALUE dummy, VALUE arg1, VALUE arg2, VALUE arg3, VALUE arg4, VALUE arg5) {
@@ -1471,8 +1468,8 @@ static VALUE rbncurs_werase(VALUE dummy, VALUE arg1) {
 static VALUE rbncurs_wgetch(VALUE dummy, VALUE arg1) {
   return INT2NUM(rbncurshelper_nonblocking_wgetch(get_window(arg1)));
 }
-static VALUE rbncurs_immed_wgetch(VALUE dummy, VALUE arg1) {
-  return INT2NUM(rbncurshelper_immed_wgetch(get_window(arg1)));
+static VALUE rbncurs_wigetch(VALUE dummy, VALUE arg1) {
+  return INT2NUM(wgetch(get_window(arg1)));
 }
 static VALUE rbncurs_whline(VALUE dummy, VALUE arg1, VALUE arg2, VALUE arg3) {
   return INT2NUM(whline(get_window(arg1), NUM2ULONG(arg2), NUM2INT(arg3)));
@@ -1692,7 +1689,7 @@ static void init_functions_2(void) {
   NCFUNC(flushinp, 0);
   NCFUNC(getbkgd, 1);
   NCFUNC(getch, 0);
-  NCFUNC(immed_getch, 0);
+  NCFUNC(igetch, 0);
   NCFUNC(halfdelay, 1);
   rb_define_module_function(mNcurses, "has_colors?", (&rbncurs_has_colors), 0);
   /* TODO: Rename these with more descriptive names. */
@@ -1741,7 +1738,7 @@ static void init_functions_2(void) {
   NCFUNC(mvdelch, 2);
   NCFUNC(mvderwin, 3);
   NCFUNC(mvgetch, 2);
-  NCFUNC(immed_mvgetch, 2);
+  NCFUNC(mvigetch, 2);
 #ifdef HAVE_MVHLINE
   NCFUNC(mvhline, 4);
 #endif
@@ -1762,7 +1759,7 @@ static void init_functions_2(void) {
 #endif
   NCFUNC(mvwdelch, 3);
   NCFUNC(mvwgetch, 3);
-  NCFUNC(immed_mvwgetch, 3);
+  NCFUNC(mvwigetch, 3);
 #ifdef HAVE_MVWHLINE
   NCFUNC(mvwhline, 5);
 #endif
@@ -1894,7 +1891,7 @@ static void init_functions_2(void) {
   NCFUNC(wechochar, 2);
   NCFUNC(werase, 1);
   NCFUNC(wgetch, 1);
-  NCFUNC(immed_wgetch, 1);
+  NCFUNC(wigetch, 1);
   NCFUNC(whline, 3);
   NCFUNC(winch, 1);
   NCFUNC(winsch, 2);
