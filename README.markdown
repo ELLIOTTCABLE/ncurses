@@ -24,6 +24,16 @@ Next, you can simply install the gem directly from my repository:
     
     gem install elliottcable-ncurses
     
+There have been reports of the gem failing to build on some systems. This will
+be investigated in more detail at a later date, but for now, I’ll provide the
+`./configure` line I know to work on my Mac OS X 10.6 Snow Leopard system:
+    
+    ./configure --prefix=/usr/local \
+      --without-cxx --without-cxx-binding --without-ada --without-progs --without-curses-h \
+      --with-shared --without-debug \
+      --enable-widec --enable-const --enable-ext-colors --enable-sigwinch --enable-wgetch-events \
+    && make
+    
 Contributing
 ------------
 If you're more interested in the project, and desire to work with its sources,
