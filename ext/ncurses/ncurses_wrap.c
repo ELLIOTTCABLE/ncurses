@@ -137,7 +137,8 @@ static void init_constants_2(void) {
   rb_define_const(mNcurses, "COLOR_BLUE",    INT2NUM(COLOR_BLUE));
   rb_define_const(mNcurses, "COLOR_MAGENTA", INT2NUM(COLOR_MAGENTA));
   rb_define_const(mNcurses, "COLOR_CYAN",    INT2NUM(COLOR_CYAN));
-  
+  rb_define_const(mNcurses, "COLOR_WHITE",   INT2NUM(COLOR_WHITE));
+   
   
   
   rb_define_const(mNcurses, "OK",            INT2NUM(OK));
