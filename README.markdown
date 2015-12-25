@@ -1,4 +1,4 @@
-ncurses
+ncurses <img alt='Maintenance status' src="https://img.shields.io/badge/maintained%3F-no!-red.svg?style=flat"><img src="http://elliottcable.s3.amazonaws.com/p/8x8.png"><a target="_blank" href="https://rubygems.org/gems/elliottcable-ncurses"><img alt='RubyGem downloads' src="https://img.shields.io/gem/dt/elliottcable-ncurses.svg?style=flat"></a><img src="http://elliottcable.s3.amazonaws.com/p/8x8.png"><a target="_blank" href="license.txt"><img alt='Open-source licensing details' src="https://img.shields.io/badge/license-LGPL_v2.1-blue.svg?style=flat"></a><img src="http://elliottcable.s3.amazonaws.com/p/8x8.png"><a target="_blank" href="http://ell.io/IRC"><img alt='Chat on Freenode' src="https://img.shields.io/badge/chat-IRC-blue.svg"></a><img src="http://elliottcable.s3.amazonaws.com/p/8x8.png"><a target="_blank" href="http://twitter.com/ELLIOTTCABLE"><img alt='Twitter followers' src="https://img.shields.io/twitter/follow/ELLIOTTCABLE.svg?style=flat&label=followers&color=blue"></a>
 =======
 This is a RubyGem installation of Tobias Herzke's [ncurses-ruby][].
 It has been modified slightly in various ways, and is intended to continue the
